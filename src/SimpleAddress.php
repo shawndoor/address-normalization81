@@ -15,10 +15,10 @@ class SimpleAddress extends Address
 
     public function __construct(
         string $address1,
-        ?string $address2,
+        ?string $address2 = null,
         string $city,
         string $state,
-        ?string $postalCode
+        ?string $postalCode = null
     ) {
         $this->address1 = $address1;
         $this->address2 = $address2;
