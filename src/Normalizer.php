@@ -265,7 +265,8 @@ class Normalizer
              'city' => @$match[15],
              'state' => @$match[16],
              'postal_code' => @$match[17],
-             'postal_code_ext' => @$match[18]
+             // 'postal_code_ext' => @$match[18]
+             'postal_code_ext' => ''
         );
 
         return $this->normalizeAddress($parsedAddress);
