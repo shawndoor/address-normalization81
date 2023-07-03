@@ -230,46 +230,47 @@ class Normalizer
 
     protected function parseToArray($address)
     {
-        $match = array();
-        preg_match('/' . $this->address_regexp . '/i', $address, $match);
+       $match = array();
+       preg_match('/' . $this->address_regexp . '/i', $address, $match);
+       
+       if (!$match) {
+           return false;
+       }
+       
+       $street = $match[5] ?? null;
+       if (!$street) {
+           $street = $match[10] ?? null;
+           if (!$street) {
+               $street = $match[2] ?? null;
+           }
+       }
+       
+       $streetType = $match[6] ?? null;
+       if (!$streetType) {
+           $streetType = $match[3] ?? null;
+       }
+       
+       $suffix = $match[7] ?? null;
+       if (!$suffix) {
+           $suffix = $match[12] ?? null;
+       }
+       
+       $parsedAddress = array(
+           'number' => $match[1] ?? null,
+           'street' => $street,
+           'street_type' => $streetType,
+           'unit' => $match[14] ?? null,
+           'unit_prefix' => $match[13] ?? null,
+           'suffix' => $suffix,
+           'prefix' => $match[4] ?? null,
+           'city' => $match[15] ?? null,
+           'state' => $match[16] ?? null,
+           'postal_code' => $match[17] ?? null,
+           'postal_code_ext' => $match[18] ?? null
+       );
+       
+       return $this->normalizeAddress($parsedAddress);
 
-        if (!$match) {
-            return false;
-        }
-        $street = @$match[5];
-        if (!$street) {
-            $street = @$match[10];
-            if (!$street) {
-                $street = @$match[2];
-            }
-        }
-
-        $streetType = @$match[6];
-        if (!$streetType) {
-            $streetType = @$match[3];
-        }
-
-        $suffix = @$match[7];
-        if (!$suffix) {
-            $suffix = @$match[12];
-        }
-
-        $parsedAddress = array(
-             'number' => @$match[1],
-             'street' => $street,
-             'street_type' => $streetType,
-             'unit' => @$match[14],
-             'unit_prefix' => @$match[13],
-             'suffix' => $suffix,
-             'prefix' => @$match[4],
-             'city' => @$match[15],
-             'state' => @$match[16],
-             'postal_code' => @$match[17],
-             // 'postal_code_ext' => @$match[18]
-             'postal_code_ext' => ''
-        );
-
-        return $this->normalizeAddress($parsedAddress);
     }
 
     private function normalizeAddress($addr)
