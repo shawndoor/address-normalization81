@@ -254,6 +254,8 @@ class Normalizer
        if (!$suffix) {
            $suffix = $match[12] ?? null;
        }
+
+       if (isset($match[13]) && $match[13]!='') { $match[13]="Unit";} // Make sure all units prefixes are converted to 'Unit' for normalization purposes
        
        $parsedAddress = array(
            'number' => $match[1] ?? null,
